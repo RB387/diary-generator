@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="14135f4b-991b-430c-a5fc-f1c4fe3876df" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/output.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/bullshit-generator.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/bullshit-generator.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/output.xlsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,6 +34,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -41,11 +46,22 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1586167460135</updated>
-      <workItem from="1586167466309" duration="3974000" />
+      <workItem from="1586167466309" duration="6971000" />
+      <workItem from="1586178820803" duration="4321000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="196" y="131" key="SettingsEditor" timestamp="1586184904625">
+      <screen x="0" y="23" width="1440" height="830" />
+    </state>
+    <state x="196" y="131" key="SettingsEditor/0.23.1440.830@0.23.1440.830" timestamp="1586184904625" />
+    <state x="413" y="274" key="com.intellij.ide.util.TipDialog" timestamp="1586178832389">
+      <screen x="0" y="23" width="1440" height="830" />
+    </state>
+    <state x="413" y="274" key="com.intellij.ide.util.TipDialog/0.23.1440.830@0.23.1440.830" timestamp="1586178832389" />
   </component>
 </project>

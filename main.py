@@ -6,61 +6,13 @@ import numpy as np, numpy.random
 
 MEAN_MINUTES = 210
 
-class ExerciseType(object):
-    def get_name(self):
-        pass
-
-    def get_property_range(self):
-        pass
-
-
-class JumpingOnPlaceExerciseType(ExerciseType):
-    def get_name(self):
-        return "Прыжки на месте"
-
-    def get_property_range(self):
-        return [40, 70]
-
-
-class PushUpsExerciseType(ExerciseType):
-    def get_name(self):
-        return "Отжимания"
-
-    def get_property_range(self):
-        return [20, 40]
-
-
-class SquattingExerciseType(ExerciseType):
-    def get_name(self):
-        return "Приседания"
-
-    def get_property_range(self):
-        return [30, 50]
-
-
-class AbsExerciseType(ExerciseType):
-    def get_name(self):
-        return "Пресс"
-
-    def get_property_range(self):
-        return [30, 50]
-
-
-class PullUpExerciseType(ExerciseType):
-    def get_name(self):
-        return "Подтягивания"
-
-    def get_property_range(self):
-        return [10, 20]
-
-
 def generate_trainings(time):
     exercise_types = [
-        JumpingOnPlaceExerciseType(),
-        PushUpsExerciseType(),
-        SquattingExerciseType(),
-        PullUpExerciseType(),
-        AbsExerciseType()
+        "Прыжки на месте",
+        "Подтягивания",
+        "Пресс",
+        "Отжимания",
+        "Приседания"
     ]
     count = random.randint(3, len(exercise_types))
     dirichlet = np.random.dirichlet(np.ones(count), size=1)[0] * time
@@ -70,7 +22,7 @@ def generate_trainings(time):
         exercise = exercise_types[idx_training]
         count = int(dirichlet[idx]*2)
         if count > 5:
-            trainings.append({'name': exercise.get_name(),
+            trainings.append({'name': exercise,
                               'count': count,
                               'time': int(dirichlet[idx]) })
             exercise_types.pop(idx_training)
@@ -105,13 +57,13 @@ def generate(weight, date):
     date_formatted = dt.datetime.strptime(date, "%Y-%m-%d")
     diary = []
     for day in range(7):
-        exersice = generate_trainings(dirichlet[day])
-        if len(exersice) > 0:
+        exercise = generate_trainings(dirichlet[day])
+        if len(exercise) > 0:
             diary_day = dict(day=date_formatted + dt.timedelta(days=day),
                              self_feeling=random.randint(3, 5),
                              sleep=random.randint(3, 5),
                              appetite=random.randint(3, 5),
-                             trainings=exersice,
+                             trainings=exercise,
                              pulse={'before': random.randint(60, 80),
                                     'in-time': random.randint(110, 150),
                                     'after': random.randint(140, 160)},
