@@ -7,6 +7,6 @@ python3 main.py
 ```
 
 #Result:
-[!screenshot](https://raw.githubusercontent.com/RB387/diary-generator/master/git-images/result.png)
+![screenshot](https://raw.githubusercontent.com/RB387/diary-generator/master/git-images/result.png)
 #Copy-paste in in table and ...
-[!screenshot2](https://raw.githubusercontent.com/RB387/diary-generator/master/git-images/copy-paste.png)
+![screenshot2](https://raw.githubusercontent.com/RB387/diary-generator/master/git-images/copy-paste.png)
