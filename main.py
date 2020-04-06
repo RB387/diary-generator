@@ -2,7 +2,9 @@
 import random
 import datetime as dt
 import pandas as pd
+import numpy as np, numpy.random
 
+MEAN_MINUTES = 210
 
 class ExerciseType(object):
     def get_name(self):
@@ -11,19 +13,13 @@ class ExerciseType(object):
     def get_property_range(self):
         pass
 
-    def get_property_suffix(self):
-        pass
-
 
 class JumpingOnPlaceExerciseType(ExerciseType):
     def get_name(self):
         return "Прыжки на месте"
 
     def get_property_range(self):
-        return [5, 50]
-
-    def get_property_suffix(self):
-        return "раз"
+        return [40, 70]
 
 
 class PushUpsExerciseType(ExerciseType):
@@ -31,10 +27,7 @@ class PushUpsExerciseType(ExerciseType):
         return "Отжимания"
 
     def get_property_range(self):
-        return [5, 25]
-
-    def get_property_suffix(self):
-        return "раз"
+        return [20, 40]
 
 
 class SquattingExerciseType(ExerciseType):
@@ -42,10 +35,15 @@ class SquattingExerciseType(ExerciseType):
         return "Приседания"
 
     def get_property_range(self):
-        return [5, 50]
+        return [30, 50]
 
-    def get_property_suffix(self):
-        return "раз"
+
+class AbsExerciseType(ExerciseType):
+    def get_name(self):
+        return "Пресс"
+
+    def get_property_range(self):
+        return [30, 50]
 
 
 class PullUpExerciseType(ExerciseType):
@@ -53,38 +51,29 @@ class PullUpExerciseType(ExerciseType):
         return "Подтягивания"
 
     def get_property_range(self):
-        return [1, 20]
-
-    def get_property_suffix(self):
-        return "раз"
+        return [10, 20]
 
 
-# Все возможные типы упражнений
-EXERCISE_TYPES = [
-    JumpingOnPlaceExerciseType(),
-    PushUpsExerciseType(),
-    SquattingExerciseType(),
-    PullUpExerciseType()
-]
-
-
-def generate_trainings():
+def generate_trainings(time):
     exercise_types = [
         JumpingOnPlaceExerciseType(),
         PushUpsExerciseType(),
         SquattingExerciseType(),
-        PullUpExerciseType()
+        PullUpExerciseType(),
+        AbsExerciseType()
     ]
-    count = random.randint(1, len(exercise_types))
+    count = random.randint(3, len(exercise_types))
+    dirichlet = np.random.dirichlet(np.ones(count), size=1)[0] * time
     trainings = []
-    for _ in range(count):
-        idx = random.randint(0, len(exercise_types)-1)
-        exercise = exercise_types[idx]
-        count = random.randint(exercise.get_property_range()[0], exercise.get_property_range()[1])
-        trainings.append({'name': exercise.get_name(),
-                          'count': count,
-                          'time': count * random.randint(1, 2)})
-        exercise_types.pop(idx)
+    for idx in range(count):
+        idx_training = random.randint(0, len(exercise_types)-1)
+        exercise = exercise_types[idx_training]
+        count = int(dirichlet[idx]*2)
+        if count > 5:
+            trainings.append({'name': exercise.get_name(),
+                              'count': count,
+                              'time': int(dirichlet[idx]) })
+            exercise_types.pop(idx_training)
     return trainings
 
 def generate_dataframe(diary):
@@ -94,8 +83,8 @@ def generate_dataframe(diary):
         for training in day['trainings']:
             trainings_str[idx] += f'{training["name"]} {training["count"]} раз\n'
             total_time[idx] += training['time']
-    dataframe = [['' for _ in range(len(diary))],
-                 [x['day'].strftime("%d.%m.%Y") for x in diary],
+    data_frame = [[x['day'].strftime("%d.%m.%Y") for x in diary],
+                 ['' for _ in range(len(diary))],
                  [x['self_feeling'] for x in diary],
                  [x['sleep'] for x in diary],
                  [x['appetite'] for x in diary],
@@ -107,22 +96,27 @@ def generate_dataframe(diary):
                  [x['pulse']['after'] for x in diary],
                  [x['weight'] for x in diary],
                  [x['weight'] for x in diary]]
-    return pd.DataFrame(dataframe)
+    print('Total time: ', sum(total_time))
+    print('Correct data if time less than 180 minutes')
+    return pd.DataFrame(data_frame)
 
 def generate(weight, date):
+    dirichlet = np.random.dirichlet(np.ones(7), size=1)[0] * MEAN_MINUTES
     date_formatted = dt.datetime.strptime(date, "%Y-%m-%d")
     diary = []
     for day in range(7):
-        diary_day = dict(day=date_formatted + dt.timedelta(days=day),
-                         self_feeling=random.randint(3, 5),
-                         sleep=random.randint(3, 5),
-                         appetite=random.randint(3, 5),
-                         trainings=generate_trainings(),
-                         pulse={'before': random.randint(60, 80),
-                                'in-time': random.randint(110, 150),
-                                'after': random.randint(140, 160)},
-                         weight=weight)
-        diary.append(diary_day)
+        exersice = generate_trainings(dirichlet[day])
+        if len(exersice) > 0:
+            diary_day = dict(day=date_formatted + dt.timedelta(days=day),
+                             self_feeling=random.randint(3, 5),
+                             sleep=random.randint(3, 5),
+                             appetite=random.randint(3, 5),
+                             trainings=exersice,
+                             pulse={'before': random.randint(60, 80),
+                                    'in-time': random.randint(110, 150),
+                                    'after': random.randint(140, 160)},
+                             weight=weight)
+            diary.append(diary_day)
     return diary
 
 
